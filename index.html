@@ -119,6 +119,41 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Disable some effects on mobile for performance */
+        @media (max-width: 768px) {
+            .glass, .glass-dark {
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            body::before {
+                animation: none;
+                background: 
+                    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+            }
+            
+            .particles {
+                display: none;
+            }
+            
+            .icon-float {
+                animation: none;
+            }
+        }
+
+        /* Touch-friendly interactive elements */
+        @media (hover: none) and (pointer: coarse) {
+            .feature-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s;
+            }
+            
+            button:active {
+                transform: scale(0.95);
+            }
+        }
+
         /* Enhanced chart container */
         .chart-container {
             position: relative;
@@ -327,7 +362,7 @@
 
         /* Enhanced header */
         .hero-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 1rem;
@@ -337,6 +372,40 @@
             background-clip: text;
             animation: gradientShift 5s ease infinite;
             background-size: 200% 200%;
+        }
+
+        /* Mobile-optimized text sizes */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.875rem !important;
+            }
+            
+            h3 {
+                font-size: 1.25rem !important;
+            }
+            
+            p {
+                font-size: 0.875rem;
+            }
+            
+            .text-lg {
+                font-size: 1rem !important;
+            }
+            
+            .text-xl {
+                font-size: 1.125rem !important;
+            }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
         }
 
         @keyframes gradientShift {
@@ -420,6 +489,35 @@
         @keyframes typing {
             from { width: 0 }
             to { width: 100% }
+        }
+
+        /* QR Code styling */
+        .qr-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .qr-glow {
+            animation: qrGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes qrGlow {
+            0%, 100% { 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                transform: scale(1.05);
+                filter: brightness(1.1);
+            }
+        }
+
+        /* Mobile optimization for QR code */
+        @media (max-width: 640px) {
+            .qr-container img {
+                width: 200px !important;
+                height: 200px !important;
+            }
         }
     </style>
 </head>
@@ -683,6 +781,43 @@
             </div>
         </section>
 
+        <!-- QR Code Section -->
+        <section id="qr-section" class="mb-24">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 gradient-text">
+                    สแกนเพื่อดูข้อมูลเพิ่มเติม
+                </h2>
+                <div class="glass rounded-3xl p-8 max-w-md mx-auto glow">
+                    <div class="relative inline-block">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
+                        <img 
+                            src="https://lh5.googleusercontent.com/d/1nE8EkX2B9rbtRkOqHKrfQjhR9oMu-QS4" 
+                            alt="QR Code for more information"
+                            class="relative rounded-2xl shadow-2xl w-64 h-64 mx-auto object-contain bg-white p-4"
+                            style="box-shadow: 0 0 40px rgba(102, 126, 234, 0.5);"
+                            onerror="this.style.display='none'; document.getElementById('qr-fallback').style.display='block';"
+                        />
+                        <div id="qr-fallback" style="display: none;" class="relative rounded-2xl shadow-2xl w-64 h-64 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 p-8 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <svg class="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zm4-2a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zm2 2V5h1v1h-1zm-8 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-sm font-semibold">QR Code</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-gray-300">
+                        สแกน QR Code เพื่อเข้าถึงเอกสารและข้อมูลเพิ่มเติม<br/>
+                        เกี่ยวกับ SOC 2 Framework
+                    </p>
+                    <div class="mt-4 flex justify-center gap-2">
+                        <span class="px-3 py-1 rounded-full glass-dark text-xs">📱 Mobile Friendly</span>
+                        <span class="px-3 py-1 rounded-full glass-dark text-xs">🔒 Secure Access</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -692,10 +827,11 @@
     </footer>
 
     <script>
-        // Create particles
+        // Create particles (reduced for mobile)
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+            const isMobile = window.innerWidth <= 768;
+            const particleCount = isMobile ? 0 : 50; // Disable particles on mobile
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -705,6 +841,22 @@
                 particle.style.animationDuration = (15 + Math.random() * 25) + 's';
                 particlesContainer.appendChild(particle);
             }
+        }
+
+        // Touch-friendly scroll
+        function smoothScrollTo(target) {
+            const element = document.querySelector(target);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Detect touch device
+        function isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         }
 
         // Intersection Observer for animations
@@ -749,6 +901,22 @@
             document.querySelectorAll('section, .fade-in-up, .chart-container').forEach(el => {
                 observer.observe(el);
             });
+
+            // Special observer for QR code animation
+            const qrSection = document.querySelector('#qr-section');
+            if (qrSection) {
+                const qrObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const qrImg = entry.target.querySelector('img');
+                            if (qrImg) {
+                                qrImg.classList.add('qr-glow');
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 });
+                qrObserver.observe(qrSection);
+            }
 
             // Smooth scroll for scroll indicator
             document.getElementById('scrollIndicator').addEventListener('click', () => {
